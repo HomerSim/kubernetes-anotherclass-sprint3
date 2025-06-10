@@ -57,7 +57,10 @@ pipeline {
             steps {
                 // DockerHub로 이미지 업로드
                 script{
-                    sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
+                    // sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
+		    docker.withRegistry('https://registry-1.docker.io/v2/', 'docker_password') {
+                        docker.image('wowls5000/api-tester:3.0.0').push()
+                    }
                 }
             }
         }
