@@ -57,7 +57,15 @@ pipeline {
             steps {
                 // DockerHub로 이미지 업로드
                 script{
-                    sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
+                    //sh "docker push ${DOCKERHUB_USERNAME}/api-tester:${APP_VERSION}"
+			 withCredentials([usernamePassword(credentialsId: 'docker_password', 
+		                                        usernameVariable: 'USERNAME', 
+		                                        passwordVariable: 'PASSWORD')]) {
+		            sh '''
+		                echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+		                docker push wowls5000/api-tester:3.0.0
+		            '''
+		        }
                 }
             }
         }
